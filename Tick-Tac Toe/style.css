@@ -1,71 +1,196 @@
-*{
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
 body {
     background-color: rgb(3, 1, 29);
     text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+    animation: fadeIn 0.8s ease-out;
 }
-#heading{
+
+/* Page Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+#heading {
     color: white;
-    font-size: 50px;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 0.5rem;
+    animation: popIn 0.6s ease-out;
 }
-.container {
-    height: 700px;
+
+/* bounce-like pop */
+@keyframes popIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Outer container */
+.container-fluid {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Game board */
+.game {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2vmin;
+    width: min(90vmin, 420px);
+    animation: slideUp 0.8s ease-out;
+}
+
+/* Soft slide animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(25px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Each box */
+.box {
+    aspect-ratio: 1 / 1;
+    font-size: clamp(2rem, 10vmin, 4rem);
+    background-color: rgb(222, 224, 247);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 1);
+    border: none;
+    color: rgb(21, 5, 34);
+    cursor: pointer;
+
     display: flex;
     justify-content: center;
     align-items: center;
 
+    transition: transform 0.2s ease, background-color 0.3s ease;
 }
-.game{
-    height: 600px;
-    width: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap:2vmin;
-    
+
+/* Click-y feeling */
+.box:active {
+    transform: scale(0.92);
 }
-.box {
-    height: 180px;
-    width: 180px;
-    font-size: 100px;
-    background-color: rgb(222, 224, 247);
-    border-radius: 30px;
-    box-shadow: 0 0 50px rgba(0,0,0,1);
-    border: none;
-    color: rgb(21, 5, 34);
+
+/* Appear animation when value inserted (js add class 'filled') */
+.box.filled {
+    animation: markPop 0.25s ease-out;
 }
-#reset-btn {
-    height: 50px;
-    width: 170px;
-    background-color: rgb(4, 83, 167);
-    color:black;
-    border: none;
-    border-radius: 10px;
-    font-size: 25px;
+
+@keyframes markPop {
+    0% {
+        transform: scale(0.5);
+    }
+
+    80% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
-#newGame-btn{
-    height: 50px;
-    width: 170px;
+
+/* Buttons */
+#reset-btn,
+#newGame-btn {
+    padding: 0.6rem 1.6rem;
     background-color: rgb(4, 83, 167);
     color: black;
     border: none;
     border-radius: 10px;
-    font-size: 25px;
-}
-#msg{
-    font-size: 100px;
-    color:white;
-}
-.msg-container{
-    height: 30vmin;
+    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+    margin: 0.4rem;
+    cursor: pointer;
 
+    transition: transform 0.2s ease, filter 0.3s ease;
 }
-.hide{
+
+#reset-btn:hover,
+#newGame-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+}
+
+/* Message text */
+#msg {
+    font-size: clamp(1.8rem, 6vw, 3.5rem);
+    color: white;
+    animation: glow 1.5s infinite alternate ease-in-out;
+}
+
+/* Soft shimmer animation */
+@keyframes glow {
+    from {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+.msg-container {
+    min-height: clamp(3rem, 15vh, 8rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
     display: none;
 }
-/* .btn{
-    display: flex;
-} */
+
+/* Responsive tweak */
+@media (max-width: 480px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+
+    .game {
+        width: 92vmin;
+        gap: 3vmin;
+    }
+
+    .box {
+        border-radius: 15px;
+    }
+}
